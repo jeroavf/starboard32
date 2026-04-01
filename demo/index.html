@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LCARS · T-Display Okudagram</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Antonio:wght@400;600;700&family=Michroma&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+
+  :root{
+    --lcars-orange:#FF9900;
+    --lcars-lavender:#CC99CC;
+    --lcars-blue:#9999FF;
+    --lcars-peach:#FF9966;
+    --lcars-mauve:#CC6699;
+    --lcars-lt-orange:#FFCC99;
+    --lcars-lt-blue:#99CCFF;
+    --lcars-red:#FF5555;
+    --lcars-gold:#FFAA00;
+    --lcars-tan:#C9A96E;
+    --lcars-bg:#000;
+    --lcars-text:#FF9900;
+  }
+
+  body{
+    background:#0a0a0f;
+    color:#ccc;
+    font-family:'Antonio','Michroma',sans-serif;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    gap:60px;
+    flex-wrap:wrap;
+    padding:40px;
+  }
+
+  h2.label{
+    font-family:'Michroma',sans-serif;
+    font-size:11px;
+    letter-spacing:3px;
+    text-transform:uppercase;
+    color:#555;
+    text-align:center;
+    margin-bottom:12px;
+  }
+
+  .display-wrap{position:relative}
+
+  /* Bezel effect */
+  .bezel{
+    border:3px solid #1a1a2a;
+    border-radius:6px;
+    box-shadow:
+      0 0 0 1px #0d0d15,
+      0 0 30px rgba(153,153,255,0.05),
+      inset 0 0 20px rgba(0,0,0,0.8);
+    overflow:hidden;
+    position:relative;
+  }
+
+  .bezel::after{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 1px,
+      rgba(0,0,0,0.03) 1px,
+      rgba(0,0,0,0.03) 2px
+    );
+    pointer-events:none;
+    z-index:100;
+  }
+
+  /* ── LCARS Screen ── */
+  .lcars-screen{
+    width:135px;
+    height:240px;
+    background:var(--lcars-bg);
+    position:relative;
+    overflow:hidden;
+    image-rendering:pixelated;
+  }
+
+  .scaled .lcars-screen{
+    transform:scale(3);
+    transform-origin:top left;
+  }
+  .scaled .bezel{
+    width:calc(135px * 3);
+    height:calc(240px * 3);
+  }
+
+  /* ── TOP HEADER ── */
+  .header{
+    background:var(--lcars-orange);
+    height:16px;
+    border-radius:0 0 8px 0;
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    padding-right:4px;
+    position:relative;
+  }
+  .header::before{
+    content:'';
+    position:absolute;
+    left:0;top:0;
+    width:18px;height:100%;
+    background:var(--lcars-lavender);
+    border-radius:0 0 0 0;
+  }
+  .header-text{
+    font-size:6px;
+    font-weight:700;
+    color:#000;
+    letter-spacing:0.5px;
+    text-transform:uppercase;
+  }
+
+  /* ── LEFT BRACKET / ELBOW ── */
+  .sidebar{
+    position:absolute;
+    left:0;top:16px;
+    width:18px;
+    height:224px;
+    display:flex;
+    flex-direction:column;
+    gap:1px;
+  }
+
+  .sidebar .seg{
+    flex:1;
+    min-height:4px;
+  }
+  .sidebar .seg:last-child{
+    border-radius:0 0 0 8px;
+  }
+
+  .elbow{
+    width:18px;
+    height:22px;
+    background:var(--lcars-lavender);
+    border-radius:0 0 0 12px;
+    position:relative;
+  }
+  .elbow::after{
+    content:'';
+    position:absolute;
+    right:0;bottom:0;
+    width:8px;height:10px;
+    background:var(--lcars-bg);
+    border-radius:8px 0 0 0;
+  }
+
+  .elbow-bar{
+    width:18px;
+    height:3px;
+    background:var(--lcars-blue);
+  }
+
+  /* ── MAIN CONTENT AREA ── */
+  .content{
+    margin-left:20px;
+    margin-top:2px;
+    width:113px;
+    height:220px;
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+    padding:1px;
+  }
+
+  /* Ship ID */
+  .ship-id{
+    text-align:right;
+    padding:1px 2px;
+  }
+  .ship-id .name{
+    font-size:7px;
+    font-weight:700;
+    color:var(--lcars-lt-orange);
+    letter-spacing:1px;
+  }
+  .ship-id .registry{
+    font-size:5px;
+    color:var(--lcars-peach);
+    letter-spacing:0.5px;
+  }
+
+  /* Section label */
+  .section-label{
+    font-size:5px;
+    color:var(--lcars-mauve);
+    text-transform:uppercase;
+    letter-spacing:1px;
+    padding:1px 2px;
+    border-bottom:1px solid var(--lcars-mauve);
+    margin-bottom:1px;
+  }
+
+  /* Data rows */
+  .data-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:1px 2px;
+    height:11px;
+  }
+  .data-label{
+    font-size:5px;
+    color:var(--lcars-lt-blue);
+    text-transform:uppercase;
+    letter-spacing:0.3px;
+  }
+  .data-value{
+    font-size:7px;
+    font-weight:700;
+    letter-spacing:0.5px;
+  }
+  .data-value.nominal{color:var(--lcars-orange)}
+  .data-value.active{color:var(--lcars-lt-blue)}
+  .data-value.alert{color:var(--lcars-red)}
+
+  /* Bar gauge */
+  .bar-gauge{
+    width:100%;
+    height:4px;
+    background:#111;
+    border-radius:2px;
+    margin:1px 2px;
+    overflow:hidden;
+    position:relative;
+  }
+  .bar-fill{
+    height:100%;
+    border-radius:2px;
+    position:relative;
+  }
+  .bar-fill.orange{background:var(--lcars-orange);width:78%}
+  .bar-fill.blue{background:var(--lcars-blue);width:92%}
+  .bar-fill.peach{background:var(--lcars-peach);width:65%}
+  .bar-fill.lavender{background:var(--lcars-lavender);width:85%}
+
+  /* Scanning animation on bars */
+  .bar-fill::after{
+    content:'';
+    position:absolute;
+    top:0;left:-100%;
+    width:60%;height:100%;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent);
+    animation:scanBar 2.5s ease-in-out infinite;
+  }
+  @keyframes scanBar{
+    0%{left:-60%}
+    100%{left:160%}
+  }
+
+  /* Status indicator (pulsing dot) */
+  .status-dot{
+    width:4px;height:4px;
+    border-radius:50%;
+    display:inline-block;
+    margin-right:2px;
+    vertical-align:middle;
+  }
+  .status-dot.green{
+    background:#44ff44;
+    box-shadow:0 0 3px #44ff44;
+    animation:pulse 1.5s ease-in-out infinite;
+  }
+  .status-dot.yellow{
+    background:#ffcc00;
+    box-shadow:0 0 3px #ffcc00;
+    animation:pulse 2s ease-in-out infinite 0.3s;
+  }
+  .status-dot.red{
+    background:var(--lcars-red);
+    box-shadow:0 0 4px var(--lcars-red);
+    animation:pulseRed 0.8s ease-in-out infinite;
+  }
+  @keyframes pulse{
+    0%,100%{opacity:1}
+    50%{opacity:0.3}
+  }
+  @keyframes pulseRed{
+    0%,100%{opacity:1}
+    50%{opacity:0.2}
+  }
+
+  /* Divider */
+  .divider{
+    height:1px;
+    background:linear-gradient(90deg,transparent,var(--lcars-blue),transparent);
+    margin:1px 2px;
+  }
+
+  /* Scan line animation */
+  .scan-line{
+    width:100%;
+    height:8px;
+    position:relative;
+    margin:1px 2px;
+    overflow:hidden;
+    background:linear-gradient(180deg,
+      rgba(153,153,255,0.05) 0%,
+      transparent 100%
+    );
+  }
+  .scan-line::before{
+    content:'';
+    position:absolute;
+    top:0;left:0;
+    width:100%;height:1px;
+    background:var(--lcars-lt-blue);
+    box-shadow:0 0 4px var(--lcars-lt-blue);
+    animation:scanVert 3s linear infinite;
+    opacity:0.8;
+  }
+  @keyframes scanVert{
+    0%{top:0;opacity:0}
+    10%{opacity:0.8}
+    90%{opacity:0.8}
+    100%{top:100%;opacity:0}
+  }
+
+  /* Waveform */
+  .waveform{
+    height:12px;
+    margin:0 2px;
+    position:relative;
+    display:flex;
+    align-items:center;
+    gap:1px;
+  }
+  .wave-bar{
+    width:2px;
+    background:var(--lcars-blue);
+    border-radius:1px;
+    animation:waveAnim 1.2s ease-in-out infinite;
+    opacity:0.8;
+  }
+  @keyframes waveAnim{
+    0%,100%{height:2px;opacity:0.4}
+    50%{height:10px;opacity:1}
+  }
+
+  /* ── BOTTOM NAV BUTTONS ── */
+  .nav-buttons{
+    display:flex;
+    gap:2px;
+    padding:0 2px;
+    position:absolute;
+    bottom:3px;
+    left:20px;
+    right:2px;
+  }
+  .nav-btn{
+    flex:1;
+    height:10px;
+    border-radius:5px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:4px;
+    font-weight:700;
+    color:#000;
+    text-transform:uppercase;
+    letter-spacing:0.3px;
+    cursor:pointer;
+    transition:filter 0.2s;
+  }
+  .nav-btn:hover{filter:brightness(1.3)}
+  .nav-btn.b1{background:var(--lcars-mauve)}
+  .nav-btn.b2{background:var(--lcars-peach)}
+  .nav-btn.b3{background:var(--lcars-orange)}
+  .nav-btn.b4{background:var(--lcars-lt-blue)}
+
+  /* ── CYCLING NUMBERS ── */
+  .cycling{
+    animation:cycleColor 4s step-end infinite;
+  }
+  @keyframes cycleColor{
+    0%{color:var(--lcars-orange)}
+    33%{color:var(--lcars-lt-blue)}
+    66%{color:var(--lcars-peach)}
+  }
+
+  /* ── GLOBAL SCREEN FLICKER ── */
+  .lcars-screen::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:repeating-linear-gradient(
+      0deg,
+      transparent 0px,
+      transparent 1px,
+      rgba(100,100,255,0.015) 1px,
+      rgba(100,100,255,0.015) 2px
+    );
+    pointer-events:none;
+    z-index:50;
+  }
+
+  /* ── AMBIENT GLOW ── */
+  .display-wrap.scaled .bezel{
+    box-shadow:
+      0 0 0 1px #0d0d15,
+      0 0 60px rgba(255,153,0,0.08),
+      0 0 120px rgba(153,153,255,0.04),
+      inset 0 0 40px rgba(0,0,0,0.8);
+  }
+
+  /* ── Stardate block ── */
+  .stardate{
+    font-size:5px;
+    color:var(--lcars-tan);
+    text-align:right;
+    padding:0 2px;
+    letter-spacing:0.3px;
+  }
+
+  .column-info{display:flex;flex-direction:column;align-items:center}
+</style>
+</head>
+<body>
+
+<!-- 1:1 Real Size -->
+<div class="column-info">
+  <h2 class="label">1:1 &mdash; 135 × 240 px</h2>
+  <div class="display-wrap">
+    <div class="bezel">
+      <div class="lcars-screen" id="screen1"></div>
+    </div>
+  </div>
+</div>
+
+<!-- 3× Scaled -->
+<div class="column-info">
+  <h2 class="label">3× Scale &mdash; Preview</h2>
+  <div class="display-wrap scaled">
+    <div class="bezel">
+      <div class="lcars-screen" id="screen2"></div>
+    </div>
+  </div>
+</div>
+
+<template id="lcars-tpl">
+  <!-- Top Header -->
+  <div class="header">
+    <span class="header-text">LCARS 47</span>
+  </div>
+
+  <!-- Left Sidebar -->
+  <div class="sidebar">
+    <div class="elbow"></div>
+    <div class="elbow-bar"></div>
+    <div class="seg" style="background:var(--lcars-blue)"></div>
+    <div class="seg" style="background:var(--lcars-peach)"></div>
+    <div class="seg" style="background:var(--lcars-lavender)"></div>
+    <div class="seg" style="background:var(--lcars-orange)"></div>
+    <div class="seg" style="background:var(--lcars-mauve)"></div>
+    <div class="seg" style="background:var(--lcars-lt-orange)"></div>
+    <div class="seg" style="background:var(--lcars-blue)"></div>
+    <div class="seg" style="background:var(--lcars-peach);border-radius:0 0 0 8px"></div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="content">
+    <div class="ship-id">
+      <div class="name">USS ENTERPRISE</div>
+      <div class="registry">NCC-1701-D</div>
+    </div>
+
+    <div class="stardate">SD <span class="sd-value cycling">47988.1</span></div>
+
+    <div class="divider"></div>
+
+    <!-- Warp Core -->
+    <div class="section-label">Warp Core</div>
+    <div class="data-row">
+      <span class="data-label"><span class="status-dot green"></span>Status</span>
+      <span class="data-value nominal">ONLINE</span>
+    </div>
+    <div class="bar-gauge"><div class="bar-fill orange"></div></div>
+    <div class="data-row">
+      <span class="data-label">Output</span>
+      <span class="data-value nominal warp-output">1287 MJ</span>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Shields -->
+    <div class="section-label">Shields</div>
+    <div class="data-row">
+      <span class="data-label"><span class="status-dot green"></span>Integrity</span>
+      <span class="data-value active shield-val">92%</span>
+    </div>
+    <div class="bar-gauge"><div class="bar-fill blue"></div></div>
+
+    <div class="divider"></div>
+
+    <!-- Life Support -->
+    <div class="section-label">Life Support</div>
+    <div class="data-row">
+      <span class="data-label"><span class="status-dot yellow"></span>O₂ Mix</span>
+      <span class="data-value nominal o2-val">21.4%</span>
+    </div>
+    <div class="bar-gauge"><div class="bar-fill lavender"></div></div>
+    <div class="data-row">
+      <span class="data-label">Temp</span>
+      <span class="data-value active temp-val">22.1°</span>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Sensor Scan -->
+    <div class="section-label">Sensor Array</div>
+    <div class="scan-line"></div>
+    <div class="waveform" id="waveform"></div>
+  </div>
+
+  <!-- Bottom Nav -->
+  <div class="nav-buttons">
+    <div class="nav-btn b1">ENG</div>
+    <div class="nav-btn b2">TAC</div>
+    <div class="nav-btn b3">OPS</div>
+    <div class="nav-btn b4">SCI</div>
+  </div>
+</template>
+
+<script>
+  // Clone template into both screens
+  const tpl = document.getElementById('lcars-tpl');
+  ['screen1','screen2'].forEach(id => {
+    document.getElementById(id).appendChild(tpl.content.cloneNode(true));
+  });
+
+  // Generate waveform bars
+  document.querySelectorAll('.waveform').forEach(wf => {
+    for(let i = 0; i < 40; i++){
+      const bar = document.createElement('div');
+      bar.className = 'wave-bar';
+      bar.style.animationDelay = `${i * 0.06}s`;
+      bar.style.height = '2px';
+      wf.appendChild(bar);
+    }
+  });
+
+  // Cycle numeric values
+  function rand(min, max, dec=1){
+    return (Math.random()*(max-min)+min).toFixed(dec);
+  }
+  function updateValues(){
+    document.querySelectorAll('.sd-value').forEach(el => {
+      el.textContent = (47000 + Math.random()*999).toFixed(1);
+    });
+    document.querySelectorAll('.warp-output').forEach(el => {
+      el.textContent = Math.floor(1250 + Math.random()*80) + ' MJ';
+    });
+    document.querySelectorAll('.shield-val').forEach(el => {
+      el.textContent = rand(88,96,0) + '%';
+    });
+    document.querySelectorAll('.o2-val').forEach(el => {
+      el.textContent = rand(20.8,21.6) + '%';
+    });
+    document.querySelectorAll('.temp-val').forEach(el => {
+      el.textContent = rand(21.8,22.4) + '°';
+    });
+  }
+  setInterval(updateValues, 2200);
+</script>
+</body>
+</html>

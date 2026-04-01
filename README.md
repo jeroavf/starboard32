@@ -87,6 +87,10 @@ demo/
   index.html            HTML interface mockup
 ```
 
+## Acknowledgments
+
+This project is a tribute to the work of **[Michael Okuda](https://en.wikipedia.org/wiki/Michael_Okuda)**, the graphic designer who created the LCARS visual language for Star Trek: The Next Generation and subsequent series. His elegant, functional display designs — known as "okudagrams" — defined the look of science fiction interfaces for a generation and continue to inspire designers and makers around the world. Thank you, Mr. Okuda.
+
 ## License
 
 MIT
@@ -157,6 +161,10 @@ arduino-cli monitor --port /dev/ttyACM0 --config baudrate=115200
 ## Mockup
 
 O arquivo `demo/index.html` contem uma versao web do layout para referencia visual. Abra no navegador para ver a interface em tamanho real (135x240) e ampliada 3x.
+
+## Agradecimentos
+
+Este projeto e uma homenagem ao trabalho de **[Michael Okuda](https://en.wikipedia.org/wiki/Michael_Okuda)**, o designer grafico que criou a linguagem visual LCARS para Star Trek: The Next Generation e series seguintes. Seus elegantes e funcionais designs de displays — conhecidos como "okudagrams" — definiram a estetica das interfaces de ficcao cientifica para toda uma geracao e continuam inspirando designers e makers ao redor do mundo. Obrigado, Mr. Okuda.
 
 ## Licenca
 

@@ -102,7 +102,7 @@ static void drawShipId(const SystemData& data) {
     spr->setTextFont(1);
     spr->setTextSize(1);
     spr->setTextDatum(TR_DATUM);
-    spr->drawString("USS OKUDAGRAM", SCREEN_WIDTH - 3, CONTENT_Y);
+    spr->drawString("USS STARBOARD", SCREEN_WIDTH - 3, CONTENT_Y);
     spr->setTextColor(LCARS_PEACH);
     spr->drawString("NCC-ESP32", SCREEN_WIDTH - 3, CONTENT_Y + 9);
 

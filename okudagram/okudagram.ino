@@ -50,7 +50,7 @@ static void updateBrightness() {
 
 void setup() {
     Serial.begin(SERIAL_BAUD);
-    Serial.println("\n[Okudagram] Iniciando...");
+    Serial.println("\n[Starboard32] Iniciando...");
 
     tft.init();
     tft.setRotation(TFT_ROTATION);
@@ -81,7 +81,7 @@ void setup() {
     dataSourceUpdate(sysData);
 
     randomSeed(analogRead(0));
-    Serial.println("[Okudagram] Setup completo!");
+    Serial.println("[Starboard32] Setup completo!");
 }
 
 // ── Loop ────────────────────────────────────────────────

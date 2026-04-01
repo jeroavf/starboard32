@@ -27,7 +27,7 @@
 #define NTP_SYNC_INTERVAL_MS  (12UL * 3600000UL)
 
 // ── WiFi ────────────────────────────────────────────────
-#define WIFI_AP_NAME    "Okudagram-Config"
+#define WIFI_AP_NAME    "Starboard32-Config"
 #define WIFI_TIMEOUT_S  180
 
 // ── Botoes ──────────────────────────────────────────────

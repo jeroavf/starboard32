@@ -1,6 +1,6 @@
-# Okudagram
+# Starboard32
 
-LCARS interface (Star Trek TNG) for the TTGO T-Display, showing real ESP32 data as starship systems.
+LCARS-inspired interface for the TTGO T-Display, showing real ESP32 data as starship systems.
 
 ![LCARS](https://img.shields.io/badge/LCARS-47-FF9900?style=flat-square&labelColor=000)
 ![ESP32](https://img.shields.io/badge/ESP32-T--Display-blue?style=flat-square)
@@ -8,11 +8,9 @@ LCARS interface (Star Trek TNG) for the TTGO T-Display, showing real ESP32 data 
 
 > [Leia em Portugues](#portugues)
 
-## What is an Okudagram?
+## What is Starboard32?
 
-Okudagram is the name given to the computer screen graphics in Star Trek, created by designer **Michael Okuda**. The **LCARS** (Library Computer Access/Retrieval System) visual language is recognized by its rounded blocks in orange, lavender and blue tones on a black background.
-
-This project recreates that aesthetic on a 1.14" TFT display using real microcontroller data.
+Starboard32 combines "star" (space), "board" (circuit board) and "starboard" (nautical term used on starships), plus 32 from ESP32. The interface is inspired by the iconic computer displays seen in science fiction — rounded blocks in orange, lavender and blue tones on a black background.
 
 ## Hardware
 
@@ -24,8 +22,8 @@ This project recreates that aesthetic on a 1.14" TFT display using real microcon
 
 The display cycles through 4 screens via buttons:
 
-| Screen | Star Trek Theme | Real Data |
-|--------|----------------|-----------|
+| Screen | Theme | Real Data |
+|--------|-------|-----------|
 | **ENG** | Warp Core, Power Output, Antimatter | Heap memory, CPU freq, PSRAM |
 | **TAC** | Shields, Comm Status, Signal Analysis | WiFi RSSI, SSID/IP, waveform |
 | **OPS** | Ship Status, Stardate, System Alerts | Uptime, NTP time, alerts |
@@ -60,10 +58,10 @@ arduino-cli monitor --port /dev/ttyACM0 --config baudrate=115200
 
 ## First Boot
 
-1. The ESP32 creates a WiFi AP called **"Okudagram-Config"**
+1. The ESP32 creates a WiFi AP called **"Starboard32-Config"**
 2. Connect to it from your phone or laptop
 3. Configure your WiFi network in the captive portal
-4. The device restarts, syncs NTP and displays the LCARS interface
+4. The device restarts, syncs NTP and displays the interface
 
 ## Mockup
 
@@ -72,22 +70,21 @@ The file `demo/index.html` contains a web version of the layout for visual refer
 ## Structure
 
 ```
-okudagram/
-  okudagram/          Arduino sketch
-    okudagram.ino     Main loop and state machine
-    config.h          Constants (pins, timings, layout)
-    colors.h          LCARS palette in RGB565
-    lcars_frame.cpp   Shared visual chrome
-    screen_eng.cpp    Engineering screen
-    screen_tac.cpp    Tactical screen
-    screen_ops.cpp    Operations screen
-    screen_sci.cpp    Science screen
-    data_source.cpp   ESP32 telemetry reading
-    wifi_setup.cpp    WiFiManager
-    ntp_sync.cpp      NTP sync + stardate
-    buttons.cpp       Button navigation
-  demo/
-    index.html        HTML interface mockup
+okudagram/              Arduino sketch
+  okudagram.ino         Main loop and state machine
+  config.h              Constants (pins, timings, layout)
+  colors.h              LCARS palette in RGB565
+  lcars_frame.cpp       Shared visual chrome
+  screen_eng.cpp        Engineering screen
+  screen_tac.cpp        Tactical screen
+  screen_ops.cpp        Operations screen
+  screen_sci.cpp        Science screen
+  data_source.cpp       ESP32 telemetry reading
+  wifi_setup.cpp        WiFiManager
+  ntp_sync.cpp          NTP sync + stardate
+  buttons.cpp           Button navigation
+demo/
+  index.html            HTML interface mockup
 ```
 
 ## License
@@ -98,15 +95,13 @@ MIT
 
 <a name="portugues"></a>
 
-# Okudagram (Portugues)
+# Starboard32 (Portugues)
 
-Interface LCARS (Star Trek TNG) para o TTGO T-Display, exibindo dados reais do ESP32 como sistemas de uma nave estelar.
+Interface inspirada em LCARS para o TTGO T-Display, exibindo dados reais do ESP32 como sistemas de uma nave estelar.
 
-## O que e um Okudagram?
+## O que e Starboard32?
 
-Okudagram e o nome dado aos graficos e displays das telas de computador em Star Trek, criados pelo designer **Michael Okuda**. O sistema visual **LCARS** (Library Computer Access/Retrieval System) e reconhecido pelos blocos arredondados em tons de laranja, lavanda e azul sobre fundo preto.
-
-Este projeto recria essa estetica num display TFT de 1.14" usando dados reais do microcontrolador.
+Starboard32 combina "star" (estrelas), "board" (placa de circuito) e "starboard" (boreste, termo nautico usado em naves), mais 32 do ESP32. A interface e inspirada nos iconicos displays de computador vistos em ficcao cientifica — blocos arredondados em tons de laranja, lavanda e azul sobre fundo preto.
 
 ## Hardware
 
@@ -118,8 +113,8 @@ Este projeto recria essa estetica num display TFT de 1.14" usando dados reais do
 
 O display alterna entre 4 telas via botoes:
 
-| Tela | Tema Star Trek | Dados Reais |
-|------|---------------|-------------|
+| Tela | Tema | Dados Reais |
+|------|------|-------------|
 | **ENG** | Warp Core, Power Output, Antimatter | Heap memory, CPU freq, PSRAM |
 | **TAC** | Shields, Comm Status, Signal Analysis | WiFi RSSI, SSID/IP, waveform |
 | **OPS** | Ship Status, Stardate, System Alerts | Uptime, hora NTP, alertas |
@@ -154,10 +149,10 @@ arduino-cli monitor --port /dev/ttyACM0 --config baudrate=115200
 
 ## Primeiro Boot
 
-1. O ESP32 cria um AP WiFi chamado **"Okudagram-Config"**
+1. O ESP32 cria um AP WiFi chamado **"Starboard32-Config"**
 2. Conecte-se a esse AP pelo celular ou notebook
 3. Configure sua rede WiFi no portal captivo
-4. O dispositivo reinicia, sincroniza o NTP e exibe a interface LCARS
+4. O dispositivo reinicia, sincroniza o NTP e exibe a interface
 
 ## Mockup
 

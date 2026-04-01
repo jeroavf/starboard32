@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-LCARS/Okudagram interface for the TTGO T-Display (ESP32 + ST7789 135x240px TFT, portrait mode). Displays real ESP32 telemetry (heap, WiFi RSSI, temperature, uptime, CPU freq) themed as Star Trek TNG ship systems across 4 navigable screens.
+LCARS/Starboard32 interface for the TTGO T-Display (ESP32 + ST7789 135x240px TFT, portrait mode). Displays real ESP32 telemetry (heap, WiFi RSSI, temperature, uptime, CPU freq) themed as Star Trek TNG ship systems across 4 navigable screens.
 
 ## Build & Upload
 
@@ -32,7 +32,7 @@ okudagram.ino          Main loop: buttons → data update → draw frame → dra
   ├── screen_sci.cpp   SCI: temperature → "Core Temp", scan sweep animation, temp waveform
   ├── data_source.cpp  Collects all ESP32 metrics into SystemData struct (every 2s)
   ├── buttons.cpp      Debounced GPIO input: RIGHT=next, LEFT=prev, LEFT long=WiFi reset
-  ├── wifi_setup.cpp   WiFiManager captive portal ("Okudagram-Config")
+  ├── wifi_setup.cpp   WiFiManager captive portal ("Starboard32-Config")
   └── ntp_sync.cpp     NTP time sync (pool.ntp.org, UTC-3, 12h interval)
 ```
 
